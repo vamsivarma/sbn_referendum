@@ -83,6 +83,8 @@ public class PoliticiansIndexBuilder extends IndexBuilder {
         setBuilderParams(indexPath);
         // Get the whole CSV rows
         rows = csvr.readCSV();
+        
+        TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
 
         // Mantain the id of a user
         String id;
@@ -97,17 +99,17 @@ public class PoliticiansIndexBuilder extends IndexBuilder {
             // Get the politician surname
             //String surname = row[1];
             // Get all users that have the same name of the politician
-            //result =  findUserTwitterId(name);
+            result =  findUserTwitterId(name, tim);
             // Get the userId
-            id =  row[1]; //result[0];
+            id =  result[0];  // row[1];
             // Get the number of followers
-            //followers = Integer.parseInt(result[1]);
+            followers = Integer.parseInt(result[1]);
             
             //System.out.println("Politicians Builder index path: " + this.indexPath);
             
             //System.out.println("Search for : " + name + ", followers: " + followers);
             // If a user was found and it has at list a certain value of followers
-            if (!id.equals("")) { //&& followers >= 800) {
+            if (!id.equals("") && followers >= 800) {
                 // Create a new document for the index
                 this.name.setStringValue((name).toLowerCase());
                 this.screenName.setStringValue(id);
@@ -170,9 +172,7 @@ public class PoliticiansIndexBuilder extends IndexBuilder {
      * @throws IOException
      */
     
-    /*static TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
-    
-    public String[] findUserTwitterId(String name) throws IOException {
+    public String[] findUserTwitterId(String name, TweetsIndexManager tim) throws IOException {
         // Initialize a new Tweets index builder for the index of the all tweets
         
         String[] name_ary = name.split(" ");
@@ -203,6 +203,6 @@ public class PoliticiansIndexBuilder extends IndexBuilder {
         // Return the max
         String[] result = {id, new Integer(max).toString()};
         return result;
-    }*/
+    }
     
 }

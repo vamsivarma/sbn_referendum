@@ -5,6 +5,7 @@
  */
 package uniroma1.sbn.finalproject.avellinotrappolini.italianreferendum2016;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.apache.lucene.document.Document;
 import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.Manager.TweetsIndexManager;
@@ -15,7 +16,7 @@ import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.Manager.TweetsInd
  */
 public class TweetsSearcher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Yes Authorities
 //        printTweets("77934969");
 //        printTweets("3337657533");
@@ -56,7 +57,7 @@ public class TweetsSearcher {
         printTweets("330251483");
     }
 
-    private static void printTweets(String userId) {
+    private static void printTweets(String userId) throws IOException {
         TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
         ArrayList<Document> docs = tim.searchForField("userId", userId, 100000);
 

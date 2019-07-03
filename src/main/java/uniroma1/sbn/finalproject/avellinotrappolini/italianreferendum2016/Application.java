@@ -59,7 +59,7 @@ public class Application {
      */
     public static void main(String[] args) throws IOException {
         
-        //temporalAnalysis();
+        temporalAnalysis();
         
         if (!Files.exists(Paths.get("output/relWords.json"))
                 || !Files.exists(Paths.get("output/relComps.json"))
@@ -67,7 +67,7 @@ public class Application {
             //temporalAnalysis();
         }
         
-        //actionReaction();
+        actionReaction();
         
         // below is the Project part 0.4
         // just set the if statement to true if you want to run it.
@@ -84,7 +84,7 @@ public class Application {
             //part1();
         } 
         
-        //part1();
+        part1();
 
         part2();
     }
