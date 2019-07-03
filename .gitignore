@@ -1,0 +1,12 @@
+index/AllNoTweetsIndex
+index/AllPoliticiansIndex
+index/AllTweetsIndex
+index/AllYesTweetsIndex
+index/SupportersIndex
+input/stream
+input/Official_SBN-ITA-2016-Net.gz
+.DS_Store
+input/
+target/
+index_dump/
+input/basic/

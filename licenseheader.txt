@@ -1,0 +1,8 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright (C) 2018 Gabriele Avellino Giovanni Trappolini
+${licensePrefix} This is an university project for the course of Social and Behavioural Networks. ${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
