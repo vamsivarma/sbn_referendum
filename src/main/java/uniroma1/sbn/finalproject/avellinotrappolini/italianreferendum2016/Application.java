@@ -516,12 +516,19 @@ public class Application {
                 if(nodeMapper.getNode(i) != null) {
                     
                     ArrayList<String> row = new ArrayList<>();
-                    Document supporter = sim.searchForField("id", nodeMapper.getNode(i), 10).get(0);
-                    if (supporter.get("vote").equals("yes")) {
-                        yesSup.put(supporter.get("id"), supporter.get("name"));
-                    } else if (supporter.get("vote").equals("no")) {
-                        noSup.put(supporter.get("userId"), supporter.get("name"));
+                    
+                    ArrayList<Document> fMapper = sim.searchForField("id", nodeMapper.getNode(i), 10);
+                    
+                    if(!fMapper.isEmpty()) {
+                        Document supporter = fMapper.get(0);
+                    
+                        if (supporter.get("vote").equals("yes")) {
+                            yesSup.put(supporter.get("id"), supporter.get("name"));
+                        } else if (supporter.get("vote").equals("no")) {
+                            noSup.put(supporter.get("userId"), supporter.get("name"));
+                        }
                     }
+                    
                 
                 } 
                 
@@ -566,14 +573,21 @@ public class Application {
             HashMap<String, String> unclassifiedAuthorities = new HashMap<String, String>();
             // Get the vote of the authorities
             for (int i = 0; i < (1000 < authorities.size() ? 1000 : authorities.size()); i++) {
-                // get the authority
-                Document supporter = sim.searchForField("id", nodeMapper.getNode(authorities.get(i).index), 10).get(0);
-                if (supporter.get("vote").equals("yes")) {
-                    yesAuthorities.put(supporter.get("id"), supporter.get("name"));
-                } else if (supporter.get("vote").equals("no")) {
-                    noAuthorities.put(supporter.get("id"), supporter.get("name"));
-                } else {
-                    unclassifiedAuthorities.put(supporter.get("id"), supporter.get("name"));
+                
+                ArrayList<Document> aMapper = sim.searchForField("id", nodeMapper.getNode(authorities.get(i).index), 10);
+                    
+                if(!aMapper.isEmpty()) {
+                    
+                    // get the authority
+                    Document supporter = aMapper.get(0);
+                    
+                    if (supporter.get("vote").equals("yes")) {
+                        yesAuthorities.put(supporter.get("id"), supporter.get("name"));
+                    } else if (supporter.get("vote").equals("no")) {
+                        noAuthorities.put(supporter.get("id"), supporter.get("name"));
+                    } else {
+                        unclassifiedAuthorities.put(supporter.get("id"), supporter.get("name"));
+                    }
                 }
             }
 
@@ -626,16 +640,22 @@ public class Application {
 
             // Classify each hub
             for (int i = 0; i < hubs.size(); i++) {
-                Document supporter = sim.searchForField("id", nodeMapper.getNode(hubs.get(i).index), 10).get(0);
-                // If it is a politician the vote is clear
-                if (supporter.get("vote").equals("yes") && yesHubs.size() < 500) {
-                    yesHubs.put(supporter.get("id"), supporter.get("name"));
-                } else if (supporter.get("vote").equals("no") && noHubs.size() < 500) {
-                    noHubs.put(supporter.get("id"), supporter.get("name"));
-                }
-                // if the max number of authorities is reached stop
-                if ((yesHubs.size() >= 500) && (noHubs.size() >= 500)) {
-                    break;
+                
+                ArrayList<Document> hMapper = sim.searchForField("id", nodeMapper.getNode(hubs.get(i).index), 10);
+                    
+                if(!hMapper.isEmpty()) {
+                    Document supporter = hMapper.get(0);
+                
+                    // If it is a politician the vote is clear
+                    if (supporter.get("vote").equals("yes") && yesHubs.size() < 500) {
+                        yesHubs.put(supporter.get("id"), supporter.get("name"));
+                    } else if (supporter.get("vote").equals("no") && noHubs.size() < 500) {
+                        noHubs.put(supporter.get("id"), supporter.get("name"));
+                    }
+                    // if the max number of authorities is reached stop
+                    if ((yesHubs.size() >= 500) && (noHubs.size() >= 500)) {
+                        break;
+                    }
                 }
             }
 
@@ -744,17 +764,25 @@ public class Application {
             HashMap<String, String> noBrokers = new HashMap<String, String>();
             // Compute vote of the brokers
             for (int i = 0; i < brokers.size(); i++) {
-                Document supporter = sim.searchForField("id", nodeMapper.getNode(brokers.get(i).index), 10).get(0);
-                // If he is a politician
-                if (supporter.get("vote").equals("yes") && yesBrokers.size() < 500) {
-                    yesBrokers.put(supporter.get("id"), supporter.get("name"));
-                } else if (supporter.get("vote").equals("no") && noBrokers.size() < 500) {
-                    noBrokers.put(supporter.get("id"), supporter.get("name"));
-                }
+                
+                ArrayList<Document> bMapper = sim.searchForField("id", nodeMapper.getNode(brokers.get(i).index), 10);
+                    
+                if(!bMapper.isEmpty()) {
+                    
+                    Document supporter = bMapper.get(0);
+                
+                    // If he is a politician
+                    if (supporter.get("vote").equals("yes") && yesBrokers.size() < 500) {
+                        yesBrokers.put(supporter.get("id"), supporter.get("name"));
+                    } else if (supporter.get("vote").equals("no") && noBrokers.size() < 500) {
+                        noBrokers.put(supporter.get("id"), supporter.get("name"));
+                    }
 
-                // if the max number of authorities is reached stop
-                if ((yesBrokers.size() >= 500) && (noBrokers.size() >= 500)) {
-                    break;
+                    // if the max number of authorities is reached stop
+                    if ((yesBrokers.size() >= 500) && (noBrokers.size() >= 500)) {
+                        break;
+                    }
+                
                 }
             }
 
