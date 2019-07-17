@@ -154,6 +154,56 @@ public abstract class IndexManager {
             return null;
         }
     }
+    
+    
+    /**
+     * Collect all documents that match the fieldValue in any of the two fieldNames.
+     * 
+     * @param fieldName1 name of the first field where the match has to be verified
+     * @param fieldName2 name of the second field where the match has to be verified
+     * @param fieldValue value to match
+     * @param range number of results to return
+     * @return Return an ArrayList of matched documents.
+     */
+    public ArrayList<Document> searchForTwoFields(String fieldName1, String fieldName2, String fieldValue, int range) throws IOException {
+            
+            this.setReader(this.indexPath);
+          
+            // Create two TermQueries
+            TermQuery t1 = new TermQuery(new Term(fieldName1, fieldValue));
+            TermQuery t2 = new TermQuery(new Term(fieldName2, fieldValue));
+
+            // Create a BooleanQuery
+            BooleanQuery query = new BooleanQuery();
+            // Both terms MUST appears
+            query.add(t1, BooleanClause.Occur.SHOULD);
+            query.add(t2, BooleanClause.Occur.SHOULD);
+
+            try {
+                // Execute the query
+                TopDocs hits = searcher.search(query, 1000000);
+                // Collect and return the results
+                ScoreDoc[] scoreDocs = hits.scoreDocs;   
+            
+                // Collect the documents inside the query results
+                ArrayList<Document> results = new ArrayList<>();
+
+                for (ScoreDoc entry : scoreDocs) {
+                    Document doc = searcher.doc(entry.doc);
+                    results.add(doc);
+                }
+
+                // Return the list of Docs
+                return results;
+                
+
+            } catch (IOException ex) {
+                Logger.getLogger(IndexManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return null;
+       
+    }
 
     /**
      * Collect all documents that match the fieldValue for a specific list of fieldNames.

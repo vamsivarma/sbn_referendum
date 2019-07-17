@@ -27,7 +27,7 @@ import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.builder.TweetTerm
 import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.builder.TweetsIndexBuilder;
 
 /**
- * This class manage the creation and the comunication with indices of twitter messages
+ * This class manage the creation and the communication with indices of twitter messages
  * @author Vamsi Gunturi
  */
 public class TweetsIndexManager extends IndexManager {

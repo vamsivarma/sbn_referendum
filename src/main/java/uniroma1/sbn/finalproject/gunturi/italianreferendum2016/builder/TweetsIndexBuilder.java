@@ -4,6 +4,7 @@ import org.apache.lucene.document.TextField;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.DirectoryStream;
@@ -27,6 +28,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.SimpleFSDirectory;
 import static org.apache.lucene.util.Version.LUCENE_41;
 import twitter4j.HashtagEntity;
+import twitter4j.JSONObject;
 import twitter4j.TwitterException;
 import twitter4j.UserMentionEntity;
 import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.DAO.StatusWrapper;
@@ -55,6 +57,12 @@ public class TweetsIndexBuilder extends IndexBuilder {
     // Text: analyser applyed
     private TextField mentioned;
     private LongField followers;
+    
+    // String: to hold the screen name of the retweet
+    private StringField rtScreenName;
+    
+    // Long: to hold the user id of the retweet
+    private LongField rtUserId;
 
     // Map that define which field is going to have which analyzer
     private Map<String, Analyzer> analyzerPerField;
@@ -80,6 +88,10 @@ public class TweetsIndexBuilder extends IndexBuilder {
         this.hashtags = new TextField("hashtags", "", Field.Store.YES);
         this.mentioned = new TextField("mentioned", "", Field.Store.YES);
         this.followers = new LongField("followers", 0L, Field.Store.YES);
+        
+        //Storing retweet information
+        this.rtScreenName = new StringField("rtScreenName", "", Field.Store.YES);
+        this.rtUserId = new LongField("rtUserId", 0L, Field.Store.YES);
 
         // Add the fields to the document
         this.tweet.add(this.userId);
@@ -90,6 +102,8 @@ public class TweetsIndexBuilder extends IndexBuilder {
         this.tweet.add(this.hashtags);
         this.tweet.add(this.mentioned);
         this.tweet.add(this.followers);
+        this.tweet.add(this.rtScreenName);
+        this.tweet.add(this.rtUserId);
 
         // Initialize paths
         this.sourcePath = sourcePath;
@@ -117,6 +131,8 @@ public class TweetsIndexBuilder extends IndexBuilder {
         // Initialize a status wrapper to get information from the source files
         StatusWrapper sw;
         int j = 1;
+        int fCounter = 0;
+        
         // For each directory in the stream
         for (Path streamDay : dailyStreamPaths) { 
             
@@ -158,9 +174,49 @@ public class TweetsIndexBuilder extends IndexBuilder {
                     // load that in a new status wrapper and get elements of interest
                     sw = new StatusWrapper();
                     sw.load(line);
+                            
+                    JSONObject tJSON = new JSONObject(sw.getRawJson()); 
+                    
+                    /*if(fCounter <= 1000) {
+                        
+                        fCounter++;
+                        
+                        JSONObject tJSON = new JSONObject(sw.getRawJson()); 
+                        
+                        String rtUser = "";
+                        
+                        long rtId = new Long(0);
+
+                    
+
+                        if (!tJSON.isNull("in_reply_to_screen_name")) {
+                            rtUser = (String) tJSON.get("in_reply_to_screen_name");
+                            rtId = Long.parseLong((String) tJSON.get("in_reply_to_user_id_str"));
+                            
+                            System.out.println("Tweet is retweeted");
+                            
+                            System.out.println(rtUser +  "   " + rtId);
+                        }
+                        
+                        
+                        
+                        // try-with-resources statement based on post comment below :)
+                        try (FileWriter tFile = new FileWriter( "file" + fCounter + ".txt" )) {
+                            tFile.write(sw.getRawJson());
+                            System.out.println("Successfully Copied JSON Object to File...");
+                            //System.out.println("\nJSON Object: " + obj);
+                        }
+                    
+                    }*/
+                    
+                    // System.out.println(sw.getRawJson());
+                    
                     this.userId.setLongValue(sw.getStatus().getUser().getId());
                     this.date.setLongValue(sw.getTime());
+                    
+                    // @TODO: Need to check if we need this lowercase coversion or not
                     this.name.setStringValue(sw.getStatus().getUser().getName().toLowerCase());
+                    
                     this.screenName.setStringValue(sw.getStatus().getUser().getScreenName());
                     // Clean the text
                     String cleanedText = removeTrashParts(sw.getStatus().getText());
@@ -180,8 +236,23 @@ public class TweetsIndexBuilder extends IndexBuilder {
                     for (HashtagEntity hashtag : sw.getStatus().getHashtagEntities()) {
                         hashtags += "#" + hashtag.getText() + " ";
                     }
+                    
+                    // @TODO: Need to check if we need this lowercase coversion or not
                     this.hashtags.setStringValue(hashtags.toLowerCase());
                     
+                    
+                    if ( !tJSON.isNull("in_reply_to_screen_name") ) {
+                            String rtUser = "";
+                            long rtId = new Long(0);
+                            
+                            rtUser = (String) tJSON.get("in_reply_to_screen_name");
+                            rtId = Long.parseLong((String) tJSON.get("in_reply_to_user_id_str"));
+                            
+                            this.rtScreenName.setStringValue(rtUser);
+                            this.rtUserId.setLongValue(rtId);
+                    }
+                    
+                       
                     /*System.out.println("---------------------------------------");
                   
                     System.out.println("User ID: " + this.tweet.get("userId"));
@@ -229,8 +300,22 @@ public class TweetsIndexBuilder extends IndexBuilder {
         // For each value in fieldValue
         for (String fieldValue : fieldValues) {
             
-            // Get all the tweets that match that value for the chosen field
-            interestedTweets = tim.searchForField(fieldName, fieldValue, 10000);
+            
+            if(fieldName != "") {
+                // Only search in screenName field
+                 // Get all the tweets that match that value for the chosen field
+                interestedTweets = tim.searchForField(fieldName, fieldValue, 100000);
+            
+            } else {
+                
+                // We reach here if we need to search in multiple fields for getting yes or no politician tweets
+                // Search in both screenName and rtScreenName fields
+                
+                // Get all the tweets that match that value for the chosen field
+                interestedTweets = tim.searchForTwoFields("screenName", "rtScreenName", fieldValue, 100000);
+            }
+            
+           
             System.out.println(fieldValue + " " + interestedTweets.size());
             
             // For each tweet found previously, create a doc and add it to the new index
@@ -278,6 +363,7 @@ public class TweetsIndexBuilder extends IndexBuilder {
         analyzerPerField = new HashMap<String, Analyzer>();
         // Set an italian analyzer for the tweet texts
         analyzerPerField.put("tweetText", new ItalianAnalyzer(LUCENE_41));
+        
         // Set a white space analizer for the others
         wrapper = new PerFieldAnalyzerWrapper(new WhitespaceAnalyzer(LUCENE_41), analyzerPerField);
 
@@ -287,6 +373,10 @@ public class TweetsIndexBuilder extends IndexBuilder {
 
     // Method used to remove irrelevant parts from tweet texts
     private String removeTrashParts(String uncleanedText) {
+        
+        // @TODO: Add logic here to remove stop words
+        
+        
         // Remove String "RT" used to advise that the tweet is a retweet
         String cleanedText = uncleanedText.replace("RT ", " ");
         // Remove all the urls

@@ -1,6 +1,7 @@
 index/AllNoTweetsIndex
 index/AllPoliticiansIndex
 index/AllTweetsIndex
+index/AllTweetsIndex copy
 index/AllYesTweetsIndex
 index/SupportersIndex
 input/stream
@@ -11,3 +12,4 @@ target/
 index_dump/
 input/basic/
 index copy/
+output copy/

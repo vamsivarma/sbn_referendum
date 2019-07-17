@@ -67,7 +67,7 @@ public class Application {
             //temporalAnalysis();
         }
         
-        actionReaction();
+        //actionReaction();
         
         // below is the Project part 0.4
         // just set the if statement to true if you want to run it.
@@ -101,6 +101,8 @@ public class Application {
 
         // Define a time interval for SAX procedure (12h)
         long timeInterval = 43200000L;
+        
+        // @TODO: Need to double check the validity of this regular expression
         // Define the regex to be match that shows a pattern of collective attention
         String regex = "a+b+a*b*a*";
         // Relevant field in which search relevant words
@@ -108,6 +110,39 @@ public class Application {
         // Get Yes and No relevant words
         ArrayList<TweetTerm> yesList = yesTim.getRelFieldTerms(fieldNames, regex, timeInterval);
         ArrayList<TweetTerm> noList = noTim.getRelFieldTerms(fieldNames, regex, timeInterval);
+        
+        /*
+        System.out.println("Yes list length: " + yesList.size());
+        System.out.println("No list length: " + noList.size());
+        
+        System.out.println("Yes List");
+        
+        for (TweetTerm yesT: yesList){
+           
+            System.out.println("---------------------------------------");      
+            System.out.println("User ID: " + yesT.getWord());
+            System.out.println("Date: " + yesT.getType());
+            System.out.println("Name: " + yesT.getFrequency());
+
+            System.out.println("---------------------------------------"); 
+        }
+        
+        
+        System.out.println("No List");
+        
+        for (TweetTerm noT: noList){
+           
+            System.out.println("---------------------------------------");      
+            System.out.println("User ID: " + noT.getWord());
+            System.out.println("Date: " + noT.getType());
+            System.out.println("Name: " + noT.getFrequency());
+
+            System.out.println("---------------------------------------"); 
+        }
+        */
+        
+        
+        // @TODO: Need to assign these 2 dynamically from Elbow method
 
         // N° of cluster in witch divide the words found
         int nCluster = 10;
@@ -247,6 +282,12 @@ public class Application {
             // Advise the index already exist
             System.out.println(dir.toString() + ": Index already created!");
         }
+        
+        int totalTweetSize = tim.getIndexSizes();
+        
+        System.out.println("TOTAL TWEETS INDEXED: " + totalTweetSize);
+        
+        
 
         // Initialize a PoliticiansIndexManager for the index of all Politicians found
         PoliticiansIndexManager pim = new PoliticiansIndexManager("index/AllPoliticiansIndex");
@@ -295,14 +336,14 @@ public class Application {
         }*/
         
         
-        yesPoliticians = pim.searchForField("vote", "si", 1000);
+        /*yesPoliticians = pim.searchForField("vote", "si", 1000);
         noPoliticians = pim.searchForField("vote", "no", 1000);
 
         // Show how many politicians we got
         if (yesPoliticians != null && noPoliticians != null) {
             System.out.println("YES POLITICIANS: " + yesPoliticians.size());
             System.out.println("NO POLITICIANS: " + noPoliticians.size());
-        }
+        }*/
 
         // Initialize a TweetsIndexManager for the index of all yes tweets based on yes pols
         TweetsIndexManager yesTim = new TweetsIndexManager("index/AllYesTweetsIndex");
@@ -314,7 +355,7 @@ public class Application {
             ArrayList<String> yesScreenNames = pim.searchFilteredValueField("vote", "si", "screenName", 10000);
             System.out.println("YES Screen names count: " + yesScreenNames.size());
             
-            yesTim.create("index/AllTweetsIndex", "screenName", yesScreenNames);
+            yesTim.create("index/AllTweetsIndex", "", yesScreenNames);
         } else {
             // Advise the index already exist
             System.out.println(dir.toString() + ": Index already created!");
@@ -328,7 +369,7 @@ public class Application {
         if (!Files.exists(dir)) {
             // Create it collecting all the no ploticians screen name
             ArrayList<String> noScreenNames = pim.searchFilteredValueField("vote", "no", "screenName", 10000);
-            noTim.create("index/AllTweetsIndex", "screenName", noScreenNames);
+            noTim.create("index/AllTweetsIndex", "", noScreenNames);
         } else {
             // Advise the index already exist
             System.out.println(dir.toString() + ": Index already created!");
@@ -342,10 +383,82 @@ public class Application {
         System.out.println("");
         System.out.println("YES TWEETS: " + yesSize);
         System.out.println("NO TWEETS: " + noSize);
-        System.out.println("TOT TWEETS: " + (yesSize + noSize));
+        System.out.println("TOTAL TWEETS: " + (yesSize + noSize));
+        
+        
+        /* Start - Getting the timestamps of both YES and NO tweets */
+        
+        ArrayList<Document> allYes = yesTim.getAllDocs();
+        System.out.println("YES TWEETS COUNT: " + allYes.size());
+        
+        
+        // Generating YES tweet timestamps in to a single CSV file
+        /*try (PrintWriter writer = new PrintWriter(new File("yes_tt.csv"))) {
+             StringBuilder sb = new StringBuilder();
+             
+             for (Document doc: allYes){
 
-        // Set stepsize to one hour
-        long stepSize = 3600000L;
+                    //System.out.println("---------------------------------------");
+
+                    //System.out.println("Hashtags: " + doc.get("hashtags"));
+                    
+                    //System.out.println("Mentioned: " + doc.get("mentioned"));
+                    
+                    //System.out.println("Mentioned: " + doc.get("followers"));
+                    
+                     sb.append(doc.get("date"));
+                    
+                     sb.append('\n');
+
+                    //System.out.println("---------------------------------------"); 
+
+             }
+             
+             writer.write(sb.toString());
+             
+             System.out.println("done!");
+     
+
+        } catch (FileNotFoundException e) {
+              System.out.println(e.getMessage());
+        }*/
+        
+        ArrayList<Document> allNo = noTim.getAllDocs();
+        System.out.println("NO TWEETS COUNT: " + allNo.size());
+        
+        
+        // Generating YES tweet timestamps in to a single CSV file
+        /*try (PrintWriter writer = new PrintWriter(new File("no_tt.csv"))) {
+             StringBuilder sb = new StringBuilder();
+             
+             for (Document doc: allNo){
+
+                    //System.out.println("---------------------------------------");
+
+                    //System.out.println("Date: " + doc.get("date"));
+                    
+                     sb.append(doc.get("date"));
+                    
+                     sb.append('\n');
+
+                    //System.out.println("---------------------------------------"); 
+
+             }
+             
+             writer.write(sb.toString());
+             
+             System.out.println("done!");
+     
+
+        } catch (FileNotFoundException e) {
+              System.out.println(e.getMessage());
+        }*/
+        
+        /* End: Getting the timestamps of both YES and NO tweets */
+        
+        
+        // Set stepsize to 12 hour // hour
+        long stepSize =  43200000L; //3600000L;
 
         // Get yes and no tweets distro over our stepsize
         ArrayList<long[]> yesDistro = yesTim.getTweetDistro(stepSize);
@@ -376,8 +489,8 @@ public class Application {
 
         // Create plot
         plot.createPlot("Yes", x1, y1, "No", x2, y2, "Tweets Distribution", "Time", "Frequency");
-        plot.setBounds(0, 0D, 242D);
-        plot.setBounds(1, 0D, 5.5D);
+        plot.setBounds(0, 0D, 22D);
+        //plot.setBounds(1, 0D, 5.5D);
         plot.getPlot(1200, 600);
     }
 
