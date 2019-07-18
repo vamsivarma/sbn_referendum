@@ -1,8 +1,14 @@
 package uniroma1.sbn.finalproject.gunturi.italianreferendum2016.Manager;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -35,6 +41,8 @@ public class TweetsIndexManager extends IndexManager {
     private static long max = 1481036346994L;
     // First tweet posted timestamp
     private static long min = 1480170614348L;
+    
+    public static Set<String> stopWords = null;
 
     /**
      * Constructor that calls the super()
@@ -42,6 +50,14 @@ public class TweetsIndexManager extends IndexManager {
      */
     public TweetsIndexManager(String indexPath) throws IOException {
         super(indexPath);
+        
+        
+        if(TweetsIndexManager.stopWords == null) {
+            System.out.println("Adding stop words to the Hashset....");
+            this.loadStopWords();
+        
+        }
+        
         //this.setReader(this.indexPath);
     }
 
@@ -150,6 +166,8 @@ public class TweetsIndexManager extends IndexManager {
 
             // Obtain index fields
             Fields fields = MultiFields.getFields(ir);
+            
+            // long matchCounter = 0;
 
             // For each relevant field
             for (String relField : relevantFields) {
@@ -180,11 +198,21 @@ public class TweetsIndexManager extends IndexManager {
                     TweetTerm tw = twb.build(word, relField, wordValues, (int) freq);
                     
                     // If its SAX representation matches the regex add it to the relevant words
-                    if (tw.getSaxRep().matches(regex)) {
+                    /*if (tw.getSaxRep().matches(regex)) {
+                        relWords.add(tw);
+                    } else {
+                        matchCounter++;
+                    }*/
+                    
+                    // Add only if the current term is not a stop and if the word matches a particular pattern
+                    //if (tw.getSaxRep().matches(regex) && ! TweetsIndexManager.stopWords.contains(tw.getWord())) {
+                    if (! TweetsIndexManager.stopWords.contains(tw.getWord())) {
                         relWords.add(tw);
                     }
                 }
             }
+            
+            // System.out.println("Words not matching criteria: " + matchCounter );
             
             // Sort the collection by frequency
             Collections.sort(relWords);
@@ -200,6 +228,20 @@ public class TweetsIndexManager extends IndexManager {
         }
 
         return null;
+    }
+    
+    private void loadStopWords() throws FileNotFoundException, IOException {
+        
+        TweetsIndexManager.stopWords = new HashSet<>();
+        
+        FileInputStream stream = new FileInputStream("input/stopwords.txt");
+        InputStreamReader reader = new InputStreamReader(stream);
+        BufferedReader br = new BufferedReader(reader);
+        String sw;
+        while ((sw = br.readLine()) != null) {
+            //System.out.println(sw);
+            TweetsIndexManager.stopWords.add(sw);
+        }
     }
 
     /**

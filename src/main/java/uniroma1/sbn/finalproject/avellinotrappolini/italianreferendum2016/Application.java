@@ -72,7 +72,7 @@ public class Application {
         // below is the Project part 0.4
         // just set the if statement to true if you want to run it.
         if (Boolean.FALSE) {
-            actionReaction();
+            //actionReaction();
         }
                 
         if (!Files.exists(Paths.get("output/yesAuthorities.txt"))
@@ -111,35 +111,57 @@ public class Application {
         ArrayList<TweetTerm> yesList = yesTim.getRelFieldTerms(fieldNames, regex, timeInterval);
         ArrayList<TweetTerm> noList = noTim.getRelFieldTerms(fieldNames, regex, timeInterval);
         
-        /*
-        System.out.println("Yes list length: " + yesList.size());
-        System.out.println("No list length: " + noList.size());
+        HashMap<String, Integer> yesW = new HashMap<String, Integer>();
+        HashMap<String, Integer> noW = new HashMap<String, Integer>();
         
-        System.out.println("Yes List");
         
-        for (TweetTerm yesT: yesList){
-           
-            System.out.println("---------------------------------------");      
-            System.out.println("User ID: " + yesT.getWord());
-            System.out.println("Date: " + yesT.getType());
-            System.out.println("Name: " + yesT.getFrequency());
-
-            System.out.println("---------------------------------------"); 
+        //System.out.println("Yes list length: " + yesList.size());
+        //System.out.println("No list length: " + noList.size());
+        
+        int termCounter = 0;
+        
+        System.out.println("Top 10 Yes List");
+        
+        for (TweetTerm yesT: yesList) {
+            
+            
+            
+            yesW.put(yesT.getWord(), (int) yesT.getFrequency());
+            
+            termCounter++;
+            
+            if(termCounter <= 10) {
+                
+                System.out.println("---------------------------------------");      
+                System.out.println("Term: " + yesT.getWord());
+                //System.out.println("Date: " + yesT.getType());
+                System.out.println("Frequency: " + yesT.getFrequency());
+                System.out.println("---------------------------------------");
+            
+            }
+               
         }
         
         
-        System.out.println("No List");
+        System.out.println("Top 10 No List");
         
-        for (TweetTerm noT: noList){
-           
-            System.out.println("---------------------------------------");      
-            System.out.println("User ID: " + noT.getWord());
-            System.out.println("Date: " + noT.getType());
-            System.out.println("Name: " + noT.getFrequency());
-
-            System.out.println("---------------------------------------"); 
+        termCounter = 0;
+        
+        for (TweetTerm noT: noList) {
+            
+            noW.put(noT.getWord(), (int) noT.getFrequency());
+            
+            termCounter++;
+            
+            if(termCounter <= 10) {
+                System.out.println("---------------------------------------");      
+                System.out.println("Term: " + noT.getWord());
+                //System.out.println("Date: " + yesT.getType());
+                System.out.println("Frequency: " + noT.getFrequency());
+                System.out.println("---------------------------------------");
+            }
+            
         }
-        */
         
         
         // @TODO: Need to assign these 2 dynamically from Elbow method
@@ -159,7 +181,7 @@ public class Application {
         ArrayList<ClusterGraph> noGraphs = cgf.generate(noList, noTim);
 
         // Set the time interval to 3 hours
-        timeInterval = 3600000L;
+        //timeInterval = 3600000L;
 
         // List of all the words of yes and no
         ArrayList<String> representativeYesWordsList = new ArrayList<String>();
@@ -235,9 +257,13 @@ public class Application {
 //                    }
                 }
                 relComps.get("no").add(cg.getWords(compElems));
+                
+                
+                
+                // @TODO: Need to check if this is the right approach
 
                 // For each no word found
-                for (String word : cg.getWords(compElems)) {
+                /*for (String word : cg.getWords(compElems)) {
                     // If a word is already in the list of yes words
                     if (representativeYesWordsList.contains(word)) {
                         // Remove it from the Yes list and skip the adding
@@ -247,6 +273,12 @@ public class Application {
                         // add it to the no list
                         representativeNoWordsList.add(word);
                     }
+                }*/
+                
+                
+                // Add all the words found in the list of the no words
+                for (String word : cg.getWords(compElems)) {
+                    representativeNoWordsList.add(word);
                 }
             }
         }
@@ -261,6 +293,8 @@ public class Application {
             mapper.writeValue(new File("output/relWords.json"), relWords);
             mapper.writeValue(new File("output/relComps.json"), relComps);
             mapper.writeValue(new File("output/relCores.json"), relCores);
+            mapper.writeValue(new File("output/yesWords.json"), yesW);
+            mapper.writeValue(new File("output/noWords.json"), noW);
         } catch (Exception e) {
             e.printStackTrace();
         }
