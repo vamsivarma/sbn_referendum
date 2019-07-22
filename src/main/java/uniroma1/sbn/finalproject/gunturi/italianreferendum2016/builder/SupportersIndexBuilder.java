@@ -169,6 +169,15 @@ public class SupportersIndexBuilder extends IndexBuilder {
             // Get no pols
             ArrayList<String> noPols = pim.getFieldValuesList(pim.searchForField("vote", "no", 100000000), "screenName");
 
+            
+            System.out.println("Yes Politicians: " + yesPols.size());
+            System.out.println("No Politicians: " + noPols.size());
+            
+            
+            for (String pol : yesPols) {
+                System.out.println(pol);
+            }
+            
             int addedRecently = 0;
 
             System.out.println("Adding Politicians:");
@@ -196,8 +205,14 @@ public class SupportersIndexBuilder extends IndexBuilder {
             System.out.println("Adding for mentioned:");
             // Search the tweets were is mentioned at leat one yes pol
             results = tim.searchTermsInAField(yesPols, "mentioned");
+            
+            int mentionedLen = 0;
+            
             // For each result
             for (ScoreDoc doc : results) {
+                
+                mentionedLen++;
+                
                 // Get the user id of the tweet
                 String userId = tim.ir.document(doc.doc).get("userId");
                 // If the supporter is already present in the map of supporters
@@ -214,9 +229,17 @@ public class SupportersIndexBuilder extends IndexBuilder {
                     supporters.put(supporter.getId(), supporter);
                 }
             }
+            
+            //System.out.println("Mentioned YES length: " + mentionedLen);
+            
+            mentionedLen = 0;
+            
             // Do the same for the no pols mentioned
             results = tim.searchTermsInAField(noPols, "mentioned");
             for (ScoreDoc doc : results) {
+                
+                mentionedLen++;
+                
                 String userId = tim.ir.document(doc.doc).get("userId");
                 if (supporters.containsKey(userId)) {
                     Supporter supporter = supporters.get(userId);
@@ -231,9 +254,11 @@ public class SupportersIndexBuilder extends IndexBuilder {
             System.out.println("Total supporters: " + supporters.size());
             System.out.println("supporters added: " + (supporters.size() - addedRecently));
             addedRecently = supporters.size();
+            
+            //System.out.println("Mentioned NO length: " + mentionedLen);
 
             // If the structure selected is the relevant word
-            if (sourcePath == "output/relWords.json") {
+            if (sourcePath == "output/coreWords.json") {
                 // Get the rel words from the json and put it into a map
                 ObjectMapper mapper = new ObjectMapper();
 

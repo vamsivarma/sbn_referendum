@@ -89,6 +89,7 @@ public class Kmeans {
         int i = 0;
         for (TweetTerm elem : wordsInfo) {
             // Get the binary representation of the time series and put it in the matrix
+            // @TODO: Need to double check if its better to use actual SAX 
             data[i] = elem.getBinaryRep();
             i++;
 

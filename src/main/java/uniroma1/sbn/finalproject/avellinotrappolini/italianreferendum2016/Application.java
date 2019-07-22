@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ActionReaction;
 import uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA;
@@ -59,7 +60,7 @@ public class Application {
      */
     public static void main(String[] args) throws IOException {
         
-        temporalAnalysis();
+        //temporalAnalysis();
         
         if (!Files.exists(Paths.get("output/relWords.json"))
                 || !Files.exists(Paths.get("output/relComps.json"))
@@ -86,7 +87,7 @@ public class Application {
         
         part1();
 
-        part2();
+        //part2();
     }
 
     private static void temporalAnalysis() throws IOException {
@@ -134,8 +135,8 @@ public class Application {
                 
                 System.out.println("---------------------------------------");      
                 System.out.println("Term: " + yesT.getWord());
-                //System.out.println("Date: " + yesT.getType());
-                System.out.println("Frequency: " + yesT.getFrequency());
+                System.out.println("Date: " + yesT.getSaxRep());
+                //System.out.println("Frequency: " + yesT.getFrequency());
                 System.out.println("---------------------------------------");
             
             }
@@ -184,11 +185,16 @@ public class Application {
         //timeInterval = 3600000L;
 
         // List of all the words of yes and no
-        ArrayList<String> representativeYesWordsList = new ArrayList<String>();
-        ArrayList<String> representativeNoWordsList = new ArrayList<String>();
+        ArrayList<String> ccYesWordsList = new ArrayList<String>();
+        ArrayList<String> ccNoWordsList = new ArrayList<String>();
+        
+        ArrayList<String> coreYesWordsList = new ArrayList<String>();
+        ArrayList<String> coreNoWordsList = new ArrayList<String>();
 
         // Initialize a map in which put all relevant words for keys "yes" and "no".
-        HashMap<String, ArrayList<String>> relWords = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<String>> ccWords = new HashMap<String, ArrayList<String>>();
+        
+        HashMap<String, ArrayList<String>> coreWords = new HashMap<String, ArrayList<String>>();
         // Initialize a map in which put all relevant componens for keys "yes" and "no". Each key has a list of 10 elements as value
         HashMap<String, ArrayList<ArrayList<String>>> relComps = new HashMap<String, ArrayList<ArrayList<String>>>();
         // Initialize a map in which put all relevant Cores for keys "yes" and "no". Each key has a list of 10 elements as value
@@ -212,6 +218,13 @@ public class Application {
 
             // Get all the labels of the words in the core and save them in relCores
             relCores.get("yes").add(cg.getWords(coreList));
+            
+            
+            for (String word : cg.getWords(coreList)) {
+               coreYesWordsList.add(word);
+            }
+            
+            
 
             // Get cluster comps
             Set<Set<Integer>> comps = cg.getComps();
@@ -228,7 +241,7 @@ public class Application {
 
                 // Add all the words found in the list of the yes words
                 for (String word : cg.getWords(compElems)) {
-                    representativeYesWordsList.add(word);
+                    ccYesWordsList.add(word);
                 }
             }
         }
@@ -242,6 +255,10 @@ public class Application {
             }
 
             relCores.get("no").add(cg.getWords(coreList));
+            
+            for (String word : cg.getWords(coreList)) {
+               coreNoWordsList.add(word);
+            }
 
             Set<Set<Integer>> comps = cg.getComps();
             ArrayList<Integer> compElems = new ArrayList<Integer>();
@@ -256,6 +273,7 @@ public class Application {
 //                        System.out.println(nodeName + ": " + Arrays.toString(noTim.getTermTimeSeries(nodeName, "tweetText", timeInterval)));
 //                    }
                 }
+                
                 relComps.get("no").add(cg.getWords(compElems));
                 
                 
@@ -278,19 +296,23 @@ public class Application {
                 
                 // Add all the words found in the list of the no words
                 for (String word : cg.getWords(compElems)) {
-                    representativeNoWordsList.add(word);
+                    ccNoWordsList.add(word);
                 }
             }
         }
 
         // Add Words to the words map
-        relWords.put("yes", representativeYesWordsList);
-        relWords.put("no", representativeNoWordsList);
+        ccWords.put("yes", ccYesWordsList);
+        ccWords.put("no", ccNoWordsList);
+        
+        coreWords.put("yes", coreYesWordsList);
+        coreWords.put("no", coreNoWordsList);
 
         // Save maps obtained in json
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File("output/relWords.json"), relWords);
+            mapper.writeValue(new File("output/ccWords.json"), ccWords);
+            mapper.writeValue(new File("output/coreWords.json"), coreWords);
             mapper.writeValue(new File("output/relComps.json"), relComps);
             mapper.writeValue(new File("output/relCores.json"), relCores);
             mapper.writeValue(new File("output/yesWords.json"), yesW);
@@ -586,6 +608,34 @@ public class Application {
             noExp.add("#ragionidelno");
             noExp.add("#unitixilno");
             noExp.add("#votiamono");
+            
+            
+            // Initialize a TweetsIndexManager for the index of all yes tweets based on yes pols
+            /*TweetsIndexManager yesTim = new TweetsIndexManager("index/AllYesTweetsIndex");
+            
+            
+            ArrayList<Document> allYes = yesTim.getAllDocs();
+            
+            System.out.println("YES TWEETS COUNT: " + allYes.size());
+        
+        
+        
+             
+             //for (Document doc: allYes){
+
+                    //System.out.println("---------------------------------------");
+
+                    //System.out.println("Hashtags: " + doc.get("hashtags"));
+                    
+                    //System.out.println("Mentioned: " + doc.get("mentioned"));
+                    
+                    //System.out.println("Mentioned: " + doc.get("followers"));
+
+                    //System.out.println("---------------------------------------"); 
+
+             //}*/
+             
+            
 
             // Initialize a SupportersIndexManager
             SupportersIndexManager sim = new SupportersIndexManager("index/SupportersIndex", yesExp, noExp);
@@ -593,17 +643,67 @@ public class Application {
             Path dir = Paths.get("index/SupportersIndex");
             if (!Files.exists(dir)) {
                 // Create it
-                sim.create("output/relComps.json");
+                // @TODO: Identify difference in results from CC and Cores
+                sim.create("output/relCores.json");
             } else {
                 System.out.println(dir.toString() + ": Index already created!");
             }
+            
             //sim.getAllSupportersTweets();
             
             // Get all supporters ids and save them in a list
             ArrayList<String> nodes = sim.getFieldValuesList(sim.getAllDocs(), "id");
+            TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
             
             System.out.println("Total supporters: " + nodes.size());
-
+            
+            /*HashSet noDupSet = new HashSet();
+            
+            for(String node: nodes) {
+                noDupSet.add(node);            
+            }
+            
+            System.out.println("Number of unique supporters: " + noDupSet.size());*/
+            
+            boolean supportersExist = true;
+            long noSupporterTweets = 0;
+            
+            int sIndex = 0;
+            
+            
+            
+            while(supportersExist) {
+                
+                System.out.println(sIndex);
+                
+                int endIndex = sIndex + 1000;
+                
+                if(endIndex > nodes.size() - 1) {
+                    endIndex = nodes.size() - 1;
+                    supportersExist = false;
+                }
+                
+                ArrayList<String> subSList = new ArrayList(nodes.subList(sIndex, endIndex));
+                
+                //ScoreDoc[] sdst =  tim.searchTermsInAField(subSList, "userId");
+                
+                ArrayList<Document> sdst = tim.searchForField("userId", subSList, 10000);
+                
+                System.out.println("Found " + sdst.size() + " Tweets");
+                
+                //for(ScoreDoc d: sdst) {
+                 noSupporterTweets += sdst.size();
+                //}
+                
+                sIndex = endIndex;
+                
+                
+            }
+             
+            System.out.println("Total supporters: " + nodes.size()); 
+             
+            System.out.println("+++ Total Number of Supporters Tweets: " + noSupporterTweets);
+            
             // Set number of workers
             int worker = (int) (Runtime.getRuntime().availableProcessors());
 
@@ -617,7 +717,7 @@ public class Application {
             if (!Files.exists(dir)) {
                 // Create it
                 createCCSG(nodes);
-            }
+            } 
 
             // Build the graph
             FileReader fr = new FileReader("output/ccsg.txt");
@@ -656,7 +756,7 @@ public class Application {
             HashMap<String, String> yesSup = new HashMap<String, String>();
             HashMap<String, String> noSup = new HashMap<String, String>();
             
-            TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
+            //TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
 
             for(int i = 1; i < ccsg.size; i++){
                 //System.out.println("UserId: " + nodeMapper.getNode(i));
@@ -863,6 +963,10 @@ public class Application {
 //            System.out.println("IN DEGREE 25%:  " + degreeInDistribution[(int) ccsg.size / 4]);
 //            System.out.println("OUT DEGREE 25%: " + degreeOutDistribution[(int) ccsg.size / 4]);
 //            System.out.println("SUM DEGREE 25%: " + degreeSumDistribution[(int) ccsg.size / 4]);
+            /*
+           
+            //Commented for the time being
+            
             List<DoubleValues> brokers;
             dir = Paths.get("output/brokers.txt");
 
@@ -955,7 +1059,7 @@ public class Application {
 
             System.out.println();
             System.out.println("YES Brokers: " + yesBrokers.size());
-            System.out.println("NO Brokers: " + noBrokers.size());
+            System.out.println("NO Brokers: " + noBrokers.size());*/
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);

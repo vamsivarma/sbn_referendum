@@ -1,52 +1,211 @@
-313859765; ginacrisafulli; 82
-2941003353; mary🇮🇹; 20
-68411946; the mad; 59
-551331260; cristina gagino; 22
-4003940735; giovanni; 106
-2207172466; claudio; 57
-96340114; non so_non ricordo; 19
-1073290280; ernesto di stefano; 27
-791407162790649856; tiziana sandrinelli9; 7
-1144953769; giovanni pianta; 4
-573991398; vanda e basta; 48
-1010807990; manu; 39
-2216174384; carlo coracci; 75
-815635152; bell;; 93
-418980091; radio gaia; 15
-1317136464; blu•नीला; 40
-4337728043; enigmatico; 61
-2865406271; aperitiviecene roma; 29
-2578399166; ⓜ michele 🍺 ☆ ⚡; 103
-1225968722; pasqualerusso; 31
-789281882; patrizia tenda; 66
-1117558933; hele; 35
-2798863589; stefano; 102
-741394259996246016; teuta; 62
-3834882442; alfonso casillo; 1
-2318181395; grecchi pier angelo; 107
-771424564341534720; ineffetti; 50
-396218442; luca; 13
-1628612210; irene; 89
-18935802; la repubblica; 2
-771819032723021824; silvia gufetta; 16
-21366468; mediagol palermo; 17
-815758254; set damper (ghost😂); 76
-3483226768; paolapetrucci; 51
-123983186; ro messeni nemagna; 8
-138172178; d.f. lycas; 42
-2226475117; enzo™; 72
-418851266; eleonora cardogna; 38
-310379722; roberta porcaro; 21
-3024022989; charlotte field; 99
-2272916900; delmonacofondiue; 43
-363083810; vivi e lascia vivere; 84
-2936002895; rs; 109
-3898463973; maz project; 79
-560370584; ✨; 9
-320253490; saverio marafioti; 65
-216867936; affariok; 108
-528520612; nonhopiùvoglia; 58
-431901295; pietro ebner; 53
-3510030675; paolo puglisi; 24
-2260822969; salvatore scrivano; 45
-695981551973179392; il faraone; 74
+77934969; francesco clementi; 26635
+3337657533; scorazzata; 15089
+130851801; luciano nobili; 2141
+13294452; partito democratico; 22859
+1017467430; micaela campana; 20069
+1060230338; pietro ichino; 24561
+104239528; mila spicola; 762
+492928925; mariachiara carrozza; 630
+149060372; angelino alfano; 26810
+473340894; mimmo mazzei; 14525
+87306292; brando benifei; 5792
+940908996; costanza r.d'o.; 9140
+461306712; paolademicheli; 1219
+317769975; agorà; 8925
+339672122; pina picierno; 588
+384192964; ministero difesa; 40023
+35804051; ernesto carbone; 646
+504661653; laura puppato; 643
+1341462944; paolo ignazio marong; 35185
+455562995; raffaella paita; 2022
+91138156; ispi; 9138
+337767301; claudio borghi a.; 16126
+532545883; stefano vaccari; 2113
+414993771; giorgio tonini; 22961
+359555283; gianpiero d'alia; 1172
+136343557; irene tinagli; 37961
+193810402; tany; 11060
+434505068; dario nardella; 31260
+90139268; ue in italia; 16094
+365462238; ezio mauro; 16124
+441863803; stefanoceccanti; 19220
+2191248370; matteo mauri; 16168
+373423842; maurizio lupi; 13284
+3168011729; alias; 18544
+140133595; cécile kyenge; 733
+95891990; marcello pittella; 3617
+419339559; radio anch'io; 9137
+394787464; david ermini; 653
+301472434; stefano fassina; 16130
+403444000; danielecina; 12525
+14108472; giuseppe civati; 531
+224940210; max fanni canelles; 24047
+402997564; ermete realacci; 583
+15047521; stefano esposito; 1997
+1080795937; stefania pezzopane; 5814
+41328420; franco debenedetti; 40986
+62004025; giampaolo scaglione; 11259
+16401526; sergio lo giudice; 25983
+334337968; monica cirinnà; 25971
+7844932; francesco russo; 565
+454875570; fabio salamida; 18865
+55238295; anna paola concia; 7706
+117407713; annalisa chirico; 26965
+235323455; francesco nicodemo; 14432
+98732981; christian rocca; 576
+882235051; miur social; 9130
+53672896; michele boldrin; 11483
+95630884; giovanna melandri; 16118
+483304367; donnadimezzo 🗝☯; 11432
+18762875; matteo renzi; 13280
+795585541; roberto reggi; 24418
+1348975760; futuredem; 2448
+5427422; stefano quintarelli; 31579
+32434307; fabrizio rondolino; 2073
+424153335; anna rita leonardi; 20143
+136971453; horas chinappi; 23827
+126049704; nellina laganà; 9720
+256163349; alessia rotta; 22051
+117701249; mitì vigliero; 3740
+550588728; pd roma; 22951
+762658396881428482; politics; 16136
+385923471; chiara braga; 14489
+722086969094905864; walter benjamin; 3132
+430127505; cesare damiano; 19205
+79385667; eurodeputatipd; 2206
+298079436; mirko boschetti; 15821
+38032906; scena muta😷; 3787
+400035492; goffredo de marchis; 848
+133461180; antonio gentile; 1934
+7500802; matteo bordone; 40964
+419316234; francesco ferrante; 9244
+986714714; carla dossi; 9276
+399010858; pat-rizia prestipino; 2392
+104960470; nomfup; 9139
+73065144; matteo ricci; 9128
+341989260; giovani democratici; 37950
+733695386846662657; basta un sì; 20194
+1140098112; filippo taddei; 11395
+412936122; michele arnese; 13358
+76769340; sandro gozi; 11546
+480645077; valeria fedeli; 13336
+85657467; marco mariani#votosì; 11251
+484982241; graziano delrio; 572
+1126411814; franco bassanini; 23435
+1071332641; pietro grasso; 26718
+1044932990; dario ligori; 5433
+26760769; chiara amélie meazza; 10132
+1969190317; matrix; 2481
+415571726; maurizio martina; 11387
+102672182; roberta pinotti; 573
+420627699; fabrizio barca; 31778
+543382485; giuditta pini; 24688
+929354545; angelo rughetti; 11452
+1652723858; stefano santachiara; 27417
+406869976; paolo gentiloni; 2115
+110960339; vincenzo de luca; 22900
+225168723; riccardo puglisi; 7695
+151029385; pietro salvatori; 2165
+148481393; marco laudonio; 12434
+2199795114; nuovo centrodestra; 31732
+1562752760; inca..zzato; 10761
+903701676; scelta civica; 810
+20432064; tommaso ederoclite; 2424
+150725695; agenzia ansa; 37180
+1319275574; giorgio faso; 15327
+1306691233; renzo seccia; 9265
+599114492; farnesina 🇮🇹; 26813
+501874833; salvatore margiotta; 1596
+331005596; roberto speranza; 2042
+216361540; lia quartapelle; 665
+351539230; ivan castelletti; 24196
+69959408; tg3; 23490
+418814614; francesco bonifazi; 19212
+429928689; erasmo d'angelis; 16280
+496437886; andrea orlando; 9346
+33205675; costa d gherardesca; 36167
+53632842; umberto ambrosoli; 2003
+304467533; 24 mattino; 20053
+715284283749974016; verità  per giulio; 18964
+13680802; roberto formigoni; 16131
+395183088; matteo richetti; 2004
+14460250; gianni pittella; 26395
+624359831; tossina libera(anty); 15163
+606259626; teresa bellanova; 13552
+342296335; tilde; 4039
+252822331; lia celi; 1985
+402171616; luigi manconi; 27862
+404048864; senatori pd; 13320
+258861907; ettore rosato; 5774
+57282569; andrea marcucci; 2066
+1073288395; andrea laudadio; 15735
+61877999; pietro raffa; 880
+51792460; giorgio meletti; 24773
+14210532; gianmarco gabrieli; 2006
+381369966; stefanoalbamonte 3.0; 9744
+585391357; malvagia; 360
+312837588; michela marzano; 20278
+964460408; sandra zampa; 16178
+12514212; orfini; 11407
+1015870262; red_mask; 15846
+1450283846; bufala news; 40054
+1870754606; lorenzo guerini; 700
+484158845; davide serra; 41787
+485841317; francesca barracciu; 36312
+695753; luca alagna; 26630
+280175586; nunzia penelope; 1983
+1919237072; statomaggioredifesa; 26241
+434816089; linda lanzillotta; 13700
+2872452713; matteo renzi news; 15083
+30248306; ivan scalfarotto; 14373
+77554140; cristiana alicata; 6133
+109573130; l'unità; 13303
+1040184410; stefania giannini; 1926
+270839361; matteo salvini; 24562
+15191260; lorenza bonaccorsi; 9912
+577873250; khalid chaouki; 22090
+430565411; alessandraserra; 2985
+523058143; roberto giachetti; 11383
+77823743; aurelio mancuso; 9253
+253262674; barbara saltamartini; 731
+1433286055; rai3; 23990
+41391760; davide faraone; 25327
+429312499; alessia morani; 3832
+542327855; marco pierini; 2619
+1120077589; giampaolo galli; 18433
+76616277; deputati pd; 16179
+928202780; fareleuropaxilpd; 19215
+332894847; carlo stagnaro; 11420
+492325083; anna ascani; 13282
+587802594; dario parrini; 19494
+2497838698; lino fortunato; 15891
+336975968; antonio misiani; 935
+61154684; dario franceschini; 25967
+80367189; rudy francesco calvo; 14548
+855410450; il ghiozzo; 11394
+419622371; enrico letta; 11377
+284706444; andrea romano; 14362
+1128760278; stefania covello; 933
+815731375; leopolda 7; 14344
+440724583; marina sereni; 23581
+1377373874; senato repubblica; 19260
+12994392; marco meloni; 19224
+465390684; l'aria che tira; 1970
+57060570; francesca puglisi; 2045
+334321591; nunzia de girolamo; 524
+434839840; laura cesaretti; 2225
+368950045; giorgio gori; 33106
+428411345; ricky tognazzi; 14386
+2987420681; giuliano poletti; 20129
+1387461; marco esposito; 9397
+61765111; stefano bonaccini; 31728
+327455219; emanuele fiano; 30949
+540895773; alessandra moretti; 2031
+461229005; francesco boccia; 28406
+412566698; filippo casini; 9262
+161740961; serfiss; 18423
+58453980; piazzapulitala7; 25969
+428521248; simona malpezzi; 25361
+414634390; pier paolo baretta; 13367
+35298549; debora serracchiani; 2132
+476836933; enrico zanetti; 25984

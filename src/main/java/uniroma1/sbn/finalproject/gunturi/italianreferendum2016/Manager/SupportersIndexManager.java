@@ -60,17 +60,15 @@ public class SupportersIndexManager extends IndexManager {
         TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
         ArrayList<String> supportersId = new ArrayList<>();
         try {
-            //this.setReader(this.indexPath);
+            this.setReader(this.indexPath);
 
             for (int i = 0; i < ir.numDocs(); i++) {
                 supportersId.add(ir.document(i).get("id"));
             }
             
             System.out.println("prima");
-            System.out.println("+++ Total Number of Supporters Tweets: "
-                    + tim.searchForField("userId", supportersId, 10000).size());
             
-            return tim.searchForField("userId", supportersId, 10000).size();
+            //return tim.searchForField("userId", supportersId, 10000).size());
             
         } catch (IOException ex) {
             Logger.getLogger(SupportersIndexManager.class.getName()).log(Level.SEVERE, null, ex);

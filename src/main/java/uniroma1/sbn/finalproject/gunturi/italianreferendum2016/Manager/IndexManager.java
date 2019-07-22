@@ -393,12 +393,17 @@ public abstract class IndexManager {
      * @param field field in which search terms
      * @return Return all documents in which appears at least one term of the list.
      */
-    public ScoreDoc[] searchTermsInAField(ArrayList<String> terms, String field) {
+    public ScoreDoc[] searchTermsInAField(ArrayList<String> terms, String field) throws IOException {
+        
+        setReader(this.indexPath);
+        
+        //System.out.println("Mentioned search path: " + this.indexPath);
         
         // Create a BooleanQuery
         BooleanQuery query = new BooleanQuery();
         // For each term in the list...
         for (String term : terms) {
+            //System.out.println(term);
             // ...create a TermQuery for it with the Clause SHOULD
             query.add(new TermQuery(new Term(field, term)), BooleanClause.Occur.SHOULD);
         }

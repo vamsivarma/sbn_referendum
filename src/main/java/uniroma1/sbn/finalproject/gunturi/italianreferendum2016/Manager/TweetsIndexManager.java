@@ -183,6 +183,7 @@ public class TweetsIndexManager extends IndexManager {
                 String word;
                 
                 // Initialize a builder
+                // @TODO: Need to check the significance of this threshold
                 TweetTermBuilder twb = new TweetTermBuilder(2, 0.01);
 
                 // For each term

@@ -318,33 +318,43 @@ public class TweetsIndexBuilder extends IndexBuilder {
            
             System.out.println(fieldValue + " " + interestedTweets.size());
             
-            // For each tweet found previously, create a doc and add it to the new index
-            for (Document tweet : interestedTweets) {
+            // Only insert the tweets if the politician has more than 10 tweets just to avoid 
+            // outliers in clustering since many people aren't tweeting much
+            // so their opinion is of mimimal importance for us
+            if(interestedTweets.size() >= 100) {
                 
-                //System.out.println("User ID: " + tweet.get("userId"));
-                //System.out.println("Date: " + tweet.get("date"));
-                //System.out.println("Name: " + tweet.get("name"));
-                //System.out.println("Vote: " + tweet.get("vote"));
-                //System.out.println("Screen Name: " + tweet.get("screenName"));
-                //System.out.println("Tweet text: " + tweet.get("tweetText"));
-                //System.out.println("Hashtags: " + tweet.get("hashtags"));
-                //System.out.println("Mentioned: " + tweet.get("mentioned"));
-                //System.out.println("Followers: " + tweet.get("followers"));
-                
-                // Get and save all the fields of the document found
-                this.userId.setLongValue(Long.parseLong(tweet.get("userId")));
-                this.date.setLongValue(Long.parseLong(tweet.get("date")));
-                this.name.setStringValue(tweet.get("name"));
-                this.screenName.setStringValue(tweet.get("screenName"));
-                this.tweetText.setStringValue(tweet.get("tweetText"));
-                this.followers.setLongValue(Long.parseLong(tweet.get("followers")));
-                this.hashtags.setStringValue(tweet.get("hashtags"));
-                this.mentioned.setStringValue(tweet.get("mentioned"));
-                // Write the new document
-                this.writer.addDocument(this.tweet);
+                // For each tweet found previously, create a doc and add it to the new index
+                for (Document tweet : interestedTweets) {
+
+                    //System.out.println("User ID: " + tweet.get("userId"));
+                    //System.out.println("Date: " + tweet.get("date"));
+                    //System.out.println("Name: " + tweet.get("name"));
+                    //System.out.println("Vote: " + tweet.get("vote"));
+                    //System.out.println("Screen Name: " + tweet.get("screenName"));
+                    //System.out.println("Tweet text: " + tweet.get("tweetText"));
+                    //System.out.println("Hashtags: " + tweet.get("hashtags"));
+                    //System.out.println("Mentioned: " + tweet.get("mentioned"));
+                    //System.out.println("Followers: " + tweet.get("followers"));
+
+                    // Get and save all the fields of the document found
+                    this.userId.setLongValue(Long.parseLong(tweet.get("userId")));
+                    this.date.setLongValue(Long.parseLong(tweet.get("date")));
+                    this.name.setStringValue(tweet.get("name"));
+                    this.screenName.setStringValue(tweet.get("screenName"));
+                    this.tweetText.setStringValue(tweet.get("tweetText"));
+                    this.followers.setLongValue(Long.parseLong(tweet.get("followers")));
+                    this.hashtags.setStringValue(tweet.get("hashtags"));
+                    this.mentioned.setStringValue(tweet.get("mentioned"));
+                    // Write the new document
+                    this.writer.addDocument(this.tweet);
+                }
+                // Make a commit
+                this.writer.commit();
+            
+            
             }
-            // Make a commit
-            this.writer.commit();
+            
+            
         }
         // Close the writer
         this.writer.close();

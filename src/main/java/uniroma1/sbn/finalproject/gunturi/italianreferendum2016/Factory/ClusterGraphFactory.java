@@ -35,7 +35,7 @@ public class ClusterGraphFactory {
      * @param tim A TweetIndexManager used to comunicate with the index
      * @return A list of ClusterGraphs
      */
-    public ArrayList<ClusterGraph> generate(ArrayList<TweetTerm> relWords, TweetsIndexManager tim) {
+   public ArrayList<ClusterGraph> generate(ArrayList<TweetTerm> relWords, TweetsIndexManager tim) {
         // Resulting List
         ArrayList<ClusterGraph> cgs = new ArrayList<ClusterGraph>();
         
@@ -99,6 +99,7 @@ public class ClusterGraphFactory {
                     float maxRelFreq = max((float) div1, (float) div2);
 
                     // If this quantity is higher than a threshold add the edge between the nodes
+                    // @TODO: Need to tweak this more to obtain better results
                     if (maxRelFreq > 0.0001) {
                         g.add(i, j, 1);
                     }
