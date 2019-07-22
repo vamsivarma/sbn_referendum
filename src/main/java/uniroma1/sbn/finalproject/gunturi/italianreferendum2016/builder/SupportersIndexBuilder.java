@@ -97,9 +97,17 @@ public class SupportersIndexBuilder extends IndexBuilder {
         setBuilderParams(indexPath);
         // Get all the supporters
         HashMap<String, Supporter> supporters = collectIndexElements();
+        
+        long yesC = 0;
+        long noC = 0;
+        long otherC = 0;
+        long sCounter = 0;
 
         // For each supporter id
         for (String key : supporters.keySet()) {
+            
+            sCounter++;
+            
             // Get the supporter
             Supporter s = supporters.get(key);
             // Fill the fields with the supporter info
@@ -116,28 +124,47 @@ public class SupportersIndexBuilder extends IndexBuilder {
                 this.isAYesPol.setIntValue(1);
                 this.isANoPol.setIntValue(0);
                 this.vote.setStringValue("yes");
+                
+                yesC++;
                 // If the supporter is a no politician
             } else if (s.getIsANoPol()) {
                 this.isAYesPol.setIntValue(0);
                 this.isANoPol.setIntValue(1);
                 this.vote.setStringValue("no");
                 // Otherwise
+                
+                noC++;
+                
             } else {
                 this.isAYesPol.setIntValue(0);
                 this.isANoPol.setIntValue(0);
                 float finalScore = computeSupporterScore(s);
-                if (finalScore > 1.45) {
+                
+                System.out.println("Final score: " + finalScore);
+                
+                if (finalScore > 1) {
+                    yesC++;
                     this.vote.setStringValue("yes");
-                } else if (finalScore < 0.7) {
+                } else if (finalScore < 0.6) {
                     this.vote.setStringValue("no");
+                    noC++;
                 } else {
-                    this.vote.setStringValue("-");
+                    this.vote.setStringValue("-"); //@TODO: Try keeping no here...
+                    otherC++;
                 }
             }
 
             // Write document
             this.writer.addDocument(this.supporter);
         }
+        
+        System.out.println("Total supporters: " + sCounter);
+        System.out.println("YES supporters: " + yesC);
+        System.out.println("NO supporters: " + noC);
+        System.out.println("Other supporters: " + otherC);
+        
+        
+        
         // Make a commit
 
         this.writer.commit();
@@ -408,12 +435,16 @@ public class SupportersIndexBuilder extends IndexBuilder {
     
     // Compute the vote of a supporter on the basis of who he mentioned and which expression and construction used
     private static float computeSupporterScore(Supporter supporter) {
-        float yesScore = (float) (supporter.getYesPolsMentioned() + 0.5 * supporter.getYesCostructionsUsed() + 3 * supporter.getYesExpressionsUsed());
+        float yesScore = (float) (supporter.getYesPolsMentioned() + 1 * supporter.getYesCostructionsUsed() + 3 * supporter.getYesExpressionsUsed());
 
-        float noScore = (float) (supporter.getNoPolsMentioned() + 0.5 * supporter.getNoCostructionsUsed() + 3 * supporter.getNoExpressionsUsed());
+        float noScore = (float) (supporter.getNoPolsMentioned() + 1 * supporter.getNoCostructionsUsed() + 3 * supporter.getNoExpressionsUsed());
         // If the sum of the score is at least 8
-        if (yesScore + noScore > 8) // return it
+        if (yesScore + noScore >= 3) // return it
         {
+            // Handling divided by zero case
+            if(noScore == 0) {
+                noScore = 1;
+            }
             return yesScore / noScore;
         }
         // Otherwise it is not possible to determine his vote

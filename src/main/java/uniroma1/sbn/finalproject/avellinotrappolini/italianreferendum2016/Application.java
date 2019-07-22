@@ -670,8 +670,7 @@ public class Application {
             
             int sIndex = 0;
             
-            
-            
+            /*
             while(supportersExist) {
                 
                 System.out.println(sIndex);
@@ -698,11 +697,12 @@ public class Application {
                 sIndex = endIndex;
                 
                 
-            }
-             
-            System.out.println("Total supporters: " + nodes.size()); 
+            } 
              
             System.out.println("+++ Total Number of Supporters Tweets: " + noSupporterTweets);
+            */
+            
+            System.out.println("Total supporters: " + nodes.size());
             
             // Set number of workers
             int worker = (int) (Runtime.getRuntime().availableProcessors());
@@ -756,6 +756,8 @@ public class Application {
             HashMap<String, String> yesSup = new HashMap<String, String>();
             HashMap<String, String> noSup = new HashMap<String, String>();
             
+            int nfCounter = 0;
+            
             //TweetsIndexManager tim = new TweetsIndexManager("index/AllTweetsIndex");
 
             for(int i = 1; i < ccsg.size; i++){
@@ -768,38 +770,55 @@ public class Application {
                     
                     if(!fMapper.isEmpty()) {
                         Document supporter = fMapper.get(0);
+                        
+                        //System.out.println(supporter.get("vote"));
                     
                         if (supporter.get("vote").equals("yes")) {
                             yesSup.put(supporter.get("id"), supporter.get("name"));
                         } else if (supporter.get("vote").equals("no")) {
-                            noSup.put(supporter.get("userId"), supporter.get("name"));
+                            noSup.put(supporter.get("id"), supporter.get("name"));
                         }
+                    } else {
+                        nfCounter++;
                     }
-                    
-                
                 } 
-                
             }
+            
+            System.out.println("Supporters not found: " + nfCounter);
             
             FileWriter fileWriter = new FileWriter("output/yesSup.txt");
             PrintWriter printWriter = new PrintWriter(fileWriter);
+            
+            int sCounter = 0;
 
             for (String supKey : yesSup.keySet()) {
+                
+                sCounter++;
+                
                 printWriter.print(supKey + "; "
                         + yesSup.get(supKey) + "; "
                         + nodeMapper.getId(supKey) + "\n");
             }
             printWriter.close();
             
+            System.out.println("Number of YES supporters: " + sCounter);
+            
+            sCounter = 0;
+            
             fileWriter = new FileWriter("output/noSup.txt");
             printWriter = new PrintWriter(fileWriter);
 
             for (String supKey : noSup.keySet()) {
+                
+                sCounter++;
+                
                 printWriter.print(supKey + "; "
                         + noSup.get(supKey) + "; "
                         + nodeMapper.getId(supKey) + "\n");
             }
             printWriter.close();
+            
+            System.out.println("Number of NO supporters: " + sCounter);
             
             // Compute HITS
             ArrayList<ArrayList<DoubleValues>> hitsResult = HubnessAuthority.compute(ccsg, 0.00001, worker);
