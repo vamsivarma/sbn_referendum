@@ -1,16 +1,17 @@
-index/AllNoTweetsIndex
-index/AllPoliticiansIndex
-index/AllTweetsIndex
-index/AllTweetsIndex copy
-index/AllYesTweetsIndex
-index/SupportersIndex
-input/stream
-input/Official_SBN-ITA-2016-Net.gz
+#index/AllNoTweetsIndex
+#index/AllPoliticiansIndex
+#index/AllTweetsIndex
+#index/AllTweetsIndex copy
+#index/AllYesTweetsIndex
+#index/SupportersIndex
+#input/stream
+#input/Official_SBN-ITA-2016-Net.gz
 .DS_Store
-input/
+#input/
 target/
 index_dump/
 input/basic/
 index copy/
 output copy/
 dump/
+input copy/

@@ -3,7 +3,6 @@ package sbn.gunturi;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.stilo.g.algo.ConnectedComponents;
 import it.stilo.g.algo.HubnessAuthority;
-import it.stilo.g.algo.KppNeg;
 import it.stilo.g.algo.SubGraph;
 import it.stilo.g.structures.DoubleValues;
 import it.stilo.g.structures.WeightedDirectedGraph;
@@ -24,22 +23,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
 import sbn.gunturi.algorithms.ComunityLPA;
 import sbn.gunturi.entities.TweetTerm;
 import sbn.gunturi.entities.ClusterGraph;
 import sbn.gunturi.manager.PoliticiansIndexManager;
 import sbn.gunturi.manager.TweetsIndexManager;
 import sbn.gunturi.factory.ClusterGraphFactory;
-import static sbn.gunturi.manager.IndexManager.searcher;
 import sbn.gunturi.manager.SupportersIndexManager;
 
 /**
@@ -76,8 +70,10 @@ public class Application {
             //part1();
         } 
         
+        // For performing YES/NO supporter analysis
         part1();
 
+        // For performing spread of influence
         part2();
     }
 
@@ -112,6 +108,7 @@ public class Application {
         
         int termCounter = 0;
         
+        /*
         System.out.println("Top 10 Yes List");
         
         for (TweetTerm yesT: yesList) {
@@ -153,7 +150,7 @@ public class Application {
                 System.out.println("---------------------------------------");
             }
             
-        }
+        }*/
         
         
         // @TODO: Need to assign these 2 dynamically from Elbow method
@@ -719,7 +716,7 @@ public class Application {
                 } 
             }
             
-            System.out.println("Supporters not found: " + nfCounter);
+            //System.out.println("Supporters not found: " + nfCounter);
             
             FileWriter fileWriter = new FileWriter("output/yesSup.txt");
             PrintWriter printWriter = new PrintWriter(fileWriter);

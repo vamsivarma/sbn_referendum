@@ -1,0 +1,47 @@
+
+##### RUN 1 #####
+
++++ SUPPORTERS (M) +++
+YES: 24379, NO: 367923, UNCLASSIFIED: 57892
+02:41:06.062 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 0.546862783	s
++++ HUBS (M') +++
+YES: 8979, NO: 382644, UNCLASSIFIED: 58571
+02:41:06.971 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 0.903027673	s
++++ AUTHORITIES (M'') +++
+YES: 112568, NO: 279986, UNCLASSIFIED: 57640
+
+##### RUN 2 #####
+
++++ SUPPORTERS (M) +++
+YES: 22712, NO: 369537, UNCLASSIFIED: 57945
+02:44:47.658 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 1.043155451	s
++++ HUBS (M') +++
+YES: 258123, NO: 134434, UNCLASSIFIED: 57637
+02:44:48.696 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 1.029418544	s
++++ AUTHORITIES (M'') +++
+YES: 142451, NO: 250103, UNCLASSIFIED: 57640
+
+
+##### RUN 3 #####
+
++++ SUPPORTERS (M) +++
+YES: 22406, NO: 370405, UNCLASSIFIED: 57383
+02:47:26.388 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 0.488647063	s
++++ HUBS (M') +++
+YES: 4321, NO: 387367, UNCLASSIFIED: 58506
+02:47:27.096 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 0.701145027	s
++++ AUTHORITIES (M'') +++
+YES: 155734, NO: 236805, UNCLASSIFIED: 57655
+
+
+##### RUN 4 #####
+
++++ SUPPORTERS (M) +++
+YES: 21352, NO: 371043, UNCLASSIFIED: 57799
+02:53:07.623 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 1.063805014	s
++++ HUBS (M') +++
+YES: 234404, NO: 158153, UNCLASSIFIED: 57637
+02:53:08.712 [main] INFO  uniroma1.sbn.finalproject.gunturi.italianreferendum2016.AnalyticalTools.ComunityLPA - 1.076036265	s
++++ AUTHORITIES (M'') +++
+YES: 168393, NO: 224161, UNCLASSIFIED: 57640
+

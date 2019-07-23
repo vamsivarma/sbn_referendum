@@ -309,7 +309,7 @@ public abstract class IndexManager {
         //@TODO: Need to do this more efficiently
         if(prevIndexPath != indexPath) {
             
-            System.out.println("Before directory open");
+            //System.out.println("Before directory open");
             
             Directory dir = new SimpleFSDirectory(new File(indexPath));
 
